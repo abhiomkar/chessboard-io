@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('chessboard-example:server');
 var http = require('http');
+var ioModule = require('socket.io');
 
 /**
  * Get port from environment and store in Express.
@@ -20,6 +21,17 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+/**
+ * Create a socket io object.
+ */
+var io = ioModule(server);
+io.on('connection', function(socket) {
+  socket.on('moved', function(data) {
+    console.log("emitting an 'update' event.");
+    socket.broadcast.emit('update', data);
+  });
+})
 
 /**
  * Listen on provided port, on all network interfaces.

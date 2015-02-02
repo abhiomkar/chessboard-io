@@ -155,11 +155,21 @@ $(function() {
          console.log('Error: ', error);
       });
 
+      // Update the other client
+      console.log("Emitting a 'moved' event");
+      socket.emit('moved', {gameId:this.gameId, fen:fen});
     };
 
     // position: 'rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR',
 
     var app = new App();
 
-
+    var socket = io.connect('http://localhost:3000');
+    socket.on('update', function(data) {
+      if(data.gameId == app.gameId) {
+        var fen = data.fen.split(" ")[0];
+        console.log("from update socket's callback");
+        app.board.position(fen);
+      }
+    });
 });
