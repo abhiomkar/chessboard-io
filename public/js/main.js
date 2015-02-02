@@ -22,8 +22,11 @@ $(function() {
 
         this.gameId = this.getGameIdFromUrl();
 
+
+
         if (this.gameId) {
             this.getGameData((function(data) {
+               console.log(this.gameId + " position is " + data.position);
                 this.gameConfig = {
                     pieceTheme: '/libs/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
                     draggable: true,
@@ -34,8 +37,7 @@ $(function() {
                     position: data.position
                 };
 
-                this.game = new Chess();
-
+                this.game = new Chess(data.position);
                 this.board = new ChessBoard('board', this.gameConfig);
                 // this.board.start();
 
@@ -101,15 +103,16 @@ $(function() {
 
             // update the board position after the piece snap 
             // for castling, en passant, pawn promotion
-            onSnapEnd: function() {
-              board.position(self.game.fen());
-            }
+
+            // onSnapEnd: function() {
+            //   board.position(self.game.fen());
+            // }
         }
     };
 
     App.fn.updateStatus = function() {
       var status = '',
-          fen = this.game.fen().split(' ')[0];
+          fen = this.game.fen(); //.split(' ')[0];
 
       var moveColor = 'White';
       if (this.game.turn() === 'b') {
