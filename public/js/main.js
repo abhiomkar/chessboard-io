@@ -37,7 +37,7 @@ $(function() {
                 this.game = new Chess();
 
                 this.board = new ChessBoard('board', this.gameConfig);
-                this.board.start();
+                // this.board.start();
 
                 window.board = this.board;
             }).bind(this));
