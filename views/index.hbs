@@ -14,13 +14,32 @@
   <script type="text/javascript" src="/libs/bootstrap/dist/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="/libs/chessboardjs/js/chessboard.js"></script>
   <script type="text/javascript" src="/libs/chessboardjs/js/chess.js"></script>
-  <script type="text/javascript" src="https://cdn.socket.io/socket.io-1.3.2.js"></script>
+  <script type="text/javascript" src="/libs/socket.io-client/socket.io.js"></script>
 
   <script type="text/javascript" src="/js/main.js"></script>
-
+  <script>
+  </script>
 </head>
 <body>
-  <h3 class="title-heading">Chess</h3>
-  <div id="board" style="width: 400px"></div>
+  <div id="chessboard-app">
+    <h3 class="title-heading">Chess</h3>
+    <div class="game-action-btns">
+      <button class="btn btn-default new-game">New Game</button>
+      <button class="btn btn-default join-game">Join Game</button>
+    </div>
+
+    <div id="board" style="width: 400px"></div>
+
+    <div id="board-status">
+          <div class="game-status"></div>
+
+          <div class="game-status-color green"></div>
+
+          <img class="piece white-piece" src="/libs/chessboardjs/img/chesspieces/wikipedia/wP.png" />
+          <img class="piece black-piece hide" src="/libs/chessboardjs/img/chesspieces/wikipedia/bP.png" />
+
+          <div class="game-turn">Your Turn</div>
+    </div>
+  </div>
 </body>
 </html>

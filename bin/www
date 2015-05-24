@@ -6,8 +6,11 @@
 
 var app = require('../app');
 var debug = require('debug')('chessboard-example:server');
-var http = require('http');
-var ioModule = require('socket.io');
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+// var server = require('socket.io');
+// var Firebase = require('firebase');
 
 /**
  * Get port from environment and store in Express.
@@ -20,26 +23,63 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-var server = http.createServer(app);
+// var server = http.createServer(app);
 
 /**
  * Create a socket io object.
  */
-var io = ioModule(server);
-io.on('connection', function(socket) {
-  socket.on('moved', function(data) {
-    console.log("emitting an 'update' event.");
-    socket.broadcast.emit('update', data);
-  });
-})
+
+// io.on('connection', function(socket) {
+//   socket.on('move', function(data) {
+//     console.log("emitting an 'update' event.");
+//     socket.broadcast.emit('update', data);
+//   });
+// })
+
+
+io.on('connection', function (socket) {
+
+    socket.on('broadcastNewPosition', function(fen) {
+      socket.broadcast.emit('newPosition', fen);
+    });
+
+    // var firebase = new Firebase('https://chessboard-io.firebaseio.com/game/'),
+    //     gameId;
+
+    // socket.on('game data', function(data) {
+    //   gameId = data.gameId;
+        
+    //   console.log('child: ', gameId);
+    //   firebase.child(gameId);
+
+    //   // emit the latest position on change
+    //   firebase.on('child_changed', function(game) {
+    //     console.log('Firebase change event', game);
+    //     socket.emit('move', game);
+    //   });
+    // });
+
+    // update position when user moves
+    // socket.on('move', function(data) {
+    //   console.log('socket move', firebase);
+    //   firebase.child(gameId);
+    //   firebase.update(data, function(error) {
+    //     console.log('error updating position', error, data);
+    //   });
+    // });
+});
+
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+// server.on('error', onError);
+// server.on('listening', onListening);
+
+
+// io.listen(app.listen(port));
 
 /**
  * Normalize a port into a number, string, or false.
@@ -99,4 +139,10 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+}
+
+module.exports = {
+  newPosition: function() {
+    return io.broadcast.emit('newPosition');
+  }
 }

@@ -1,6 +1,6 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Helvetica Nueue", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -11,8 +11,49 @@ a {
 	margin: auto;
 }
 
+#board-status {
+	width: 400px;
+	margin: auto;
+	text-align: center;
+	margin-top: 8px;
+}
+
+#board-status .game-status {
+	display: inline-block;
+}
+
+#board-status .game-status-color {
+	border-radius: 10px;
+	height: 7px;
+	width: 7px;
+	display: inline-block;
+}
+
+#board-status .game-status-color.green {
+	background-color: #43bb78;
+}
+
+#board-status img.piece {
+	height: 30px;
+	position: relative;
+	top: -2px;
+}
+
+#board-status .game-turn {
+	display: inline-block;
+	font-weight: normal;
+	font-size: 12px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	color: #626262;
+}
+
 .title-heading {
 	text-align: center;
 	font-weight: 300;
 	margin-bottom: 30px;
+}
+
+.game-action-btns {
+	text-align: center;
+	margin-bottom: 50px;
 }
