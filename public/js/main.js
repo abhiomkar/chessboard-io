@@ -22,7 +22,7 @@ $(function() {
         this.$status = this.$app.find("#board-status");
 
         console.log('connecting...');
-        this.socket = io.connect('http://localhost:3000');
+        this.socket = io();
 
         this.Events().onNewGame();
 
