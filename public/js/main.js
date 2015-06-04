@@ -32,6 +32,7 @@ $(function() {
 
           self.board.position(position);
           self.game.load(position);
+          self.updateBoardStatus(position);
         });
     };
 
@@ -58,6 +59,7 @@ $(function() {
                 this.game = new Chess();
                 this.game.load(data.position);
                 this.board = new ChessBoard('board', this.gameConfig);
+                this.updateBoardStatus(data.position);
 
                 this.socket.emit('game data', {gameId: this.gameID});
                 // this.board.start();
@@ -65,6 +67,9 @@ $(function() {
                 window.board = this.board;
             }).bind(this));
         }
+
+        this.renderJoinGameUrl();
+        this.handleJoinGame();
     };
 
     App.fn.newGame = function() {
@@ -87,6 +92,73 @@ $(function() {
         .error(function() {
             console.log("Error loading game data.");
         });
+    };
+
+    App.fn.renderJoinGameUrl = function() {
+      var href = window.location.href,
+          shareUrl,
+          $box = this.$app.find('.join-game-box'),
+          $input = this.$app.find('.join-game-box input'),
+          $closeBtn = this.$app.find('.join-game-box a');
+
+      if (href.indexOf('/black') > 0) {
+        shareUrl = href.replace('/black', '/white');
+      }
+      else if (href.indexOf('/white') > 0) {
+        shareUrl = href.replace('/white', '/black');
+      }
+
+      $input.on('click', function() {
+        $(this).select();
+      });
+
+      $closeBtn.on('click', function() {
+        $box.fadeOut('300');
+      });
+
+      $input.val(shareUrl);
+    };
+
+    App.fn.handleJoinGame = function() {
+      var self = this;
+
+      this.$app.find('.game-action-btns .join-game').on('click', function() {
+        self.$app.find('.join-game-box')
+          .show(0)
+          .delay(10000)
+          .fadeOut('300');
+      });
+    };
+
+    App.fn.updateBoardStatus = function(position) {
+      var pos = position.split(" "),
+          $piece = this.$app.find("#board-status .piece"),
+          $statusText = this.$app.find('.game-turn');
+
+      if (pos.length > 1) {
+        if (pos[1] === 'w') {
+          $piece.filter('.white-piece').removeClass('hide');
+          $piece.filter('.black-piece').addClass('hide');
+
+          if (this.playerColor === 'white') {
+            $statusText.text('Your Turn');
+          }
+          else {
+            $statusText.text("Opponent's Turn");
+          }
+        }
+        else if (pos[1] === 'b') {
+          $piece.filter('.white-piece').addClass('hide');
+          $piece.filter('.black-piece').removeClass('hide');
+
+          if (this.playerColor === 'black') {
+            $statusText.text('Your Turn');
+          }
+          else {
+            $statusText.text("Opponent's Turn");
+          }          
+        }
+      }
     };
 
     App.fn.parseUrl = function() {
@@ -152,6 +224,16 @@ $(function() {
 
                 return false;
               })
+            },
+
+            onClickJoinGameBtn: function(){
+              var self = this;
+
+              $('.join-game').on('click', function(e) {
+                e.preventDefault();
+
+                $('.join-game-box').removeClass('hide');
+              })
             }
 
             // update the board position after the piece snap 
@@ -207,6 +289,7 @@ $(function() {
          console.log('Updated.');
 
          self.socket.emit('broadcastNewPosition', fen);
+         self.updateBoardStatus(fen);
       })
       .error(function(error) {
          console.log('Error: ', error);

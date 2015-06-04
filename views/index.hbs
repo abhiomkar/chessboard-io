@@ -25,7 +25,7 @@
     <h3 class="title-heading">Chess</h3>
     <div class="game-action-btns">
       <button class="btn btn-default new-game">New Game</button>
-      <button class="btn btn-default join-game">Join Game</button>
+      <button type="button" class="btn btn-default join-game" data-toggle="modal" data-target=".join-game-modal-box">Join Game</button>
     </div>
 
     <div id="board" style="width: 400px"></div>
@@ -39,6 +39,12 @@
           <img class="piece black-piece hide" src="/libs/chessboardjs/img/chesspieces/wikipedia/bP.png" />
 
           <div class="game-turn">Your Turn</div>
+    </div>
+
+    <div class="join-game-box" style="display: none">
+        <span>Share this URL to your friend to start playing</span>
+        <input type="text"></input>
+        <a href="">x</a>
     </div>
   </div>
 </body>

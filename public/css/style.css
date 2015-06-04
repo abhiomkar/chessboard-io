@@ -57,3 +57,36 @@ a {
 	text-align: center;
 	margin-bottom: 50px;
 }
+
+.join-game-box {
+  position: fixed;
+  top: 20px;
+  left: 32%;
+  background-color: rgb(253, 214, 151);
+  padding-left: 16px;
+  border-radius: 5px;
+  padding-bottom: 3px;
+  font-size: 12px;
+}
+
+.join-game-box input {
+	width: 333px;
+	font-size: 12px;
+	padding: 3px 0;
+	border: 0;
+	margin-top: 4px;
+	outline: none;
+	font-weight: bold;
+	background-color: transparent;
+}
+
+.join-game-box a {
+	  padding-right: 18px;
+	  color: #444;
+	  font-size: 14px;
+	  text-decoration: none;
+	  display: inline-block;
+	  text-decoration: underline;
+}
+.join-gameb-box a:hover {
+	color: #444;
