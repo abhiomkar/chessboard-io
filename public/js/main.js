@@ -308,12 +308,4 @@ $(function() {
 
     var app = new App();
 
-    // var socket = io.connect('http://localhost:3000');
-    // socket.on('update', function(data) {
-    //   if(data.gameID === app.gameID) {
-    //     var fen = data.fen.split(" ")[0];
-    //     console.log("from update socket's callback");
-    //     app.board.position(fen);
-    //   }
-    // });
 });

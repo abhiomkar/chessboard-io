@@ -1,0 +1,45 @@
+{% extends 'layout.html' %}
+
+{% block bodyClasses -%}
+play
+{%- endblock %}
+
+{% block body %}
+<div class="header-wrapper container">
+  <div class="title pull-left">
+    <h1><a href="/">Chessboard</a></h1>
+  </div>
+  <div class="pull-right">
+    <ul class="list-inline">
+      <li><button class="btn btn-primary">New Game</button></li>
+      <li><button class="btn btn-default">Join Game</button></li>
+    </ul>
+  </div>
+</div>
+<hr/>
+
+<div id="chessboard-app" class="container">
+  <div class="pull-left">
+    <div id="board" style="width: 400px"></div>
+
+    <div id="board-status">
+          <div class="game-status"></div>
+
+          <div class="game-status-color green"></div>
+
+          <img class="piece white-piece" src="/libs/chessboardjs/img/chesspieces/wikipedia/wP.png" />
+          <img class="piece black-piece hide" src="/libs/chessboardjs/img/chesspieces/wikipedia/bP.png" />
+
+          <div class="game-turn">Your Turn</div>
+    </div>
+
+    <div class="join-game-box" style="display: none">
+        <span>Share this URL to your friend to start playing</span>
+        <input type="text"></input>
+        <a href="">x</a>
+    </div>
+  </div>
+  <div class="pull-right">
+  </div>
+</div>
+{% endblock %}

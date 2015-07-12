@@ -1,15 +1,21 @@
 var express = require('express'),
+	app = express(),
+	swig = require('swig'),
 	Firebase = require('firebase');
 
-var router = express.Router();
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
+// TODO: set cache to true in production
+app.set('view cache', false);
+swig.setDefaults({ cache: false });
 
 // ** UI Services **
 
-router.get('/', function(req, res, next) {
-  res.render('index');
+app.get('/', function(req, res, next) {
+  res.render('home');
 });
 
-router.get('/game/new', function(req, res, next) {
+app.get('/game/new', function(req, res, next) {
 	console.log('/game/new');
 	var firebase = new Firebase('https://chessboard-io.firebaseio.com/game');
 	var postID = firebase.push({ position: "start" });
@@ -18,17 +24,17 @@ router.get('/game/new', function(req, res, next) {
 	res.send(JSON.stringify({gameID: postID.key()}));
 });
 
-router.get('/play/:id([a-zA-Z0-9\-_]+)/:color(white|black)/?', function(req, res, next) {
+app.get('/play/:id([a-zA-Z0-9\-_]+)/:color(white|black)/?', function(req, res, next) {
   var gameID = req.params.id;
 
-  res.render('index', { title: 'hello', gameID: gameID });
+  res.render('play', { title: 'hello', gameID: gameID });
 });	
 
 // ** 
 
 // ** Data Services **
 
-router.get('/game/:id([a-zA-Z0-9\-_]+)', function(req, res) {
+app.get('/game/:id([a-zA-Z0-9\-_]+)', function(req, res) {
 	console.log('/game/id');
 
 	var gameId = req.params.id, 
@@ -59,7 +65,7 @@ router.get('/game/:id([a-zA-Z0-9\-_]+)', function(req, res) {
 	});
 });
 
-router.put('/game/:id/?', function(req, res) {
+app.put('/game/:id/?', function(req, res) {
 	var gameId = req.params.id,
 		firebase = new Firebase('https://chessboard-io.firebaseio.com/game/' + gameId);
 
@@ -85,4 +91,4 @@ router.put('/game/:id/?', function(req, res) {
 
 // **
 
-module.exports = router;
+module.exports = app

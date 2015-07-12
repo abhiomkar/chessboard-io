@@ -1,10 +1,98 @@
 body {
-  padding: 50px;
-  font: 14px "Helvetica Nueue", Helvetica, Arial, sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 a {
-  color: #00B7FF;
+  color: #4a93f3;
+}
+
+html, body.home {
+	height: 100%;
+}
+
+body.home .app-landing {
+	height: 100% !important;
+	position: relative;
+	top: 25%;
+}
+
+body.home .container {
+	width: 500px;
+}
+
+body.home #chessboard-app {
+	height: 100%;
+}
+
+body.home hr.body-line {
+	position: relative;
+	top: 30px;
+	color: #444;
+	background-color: #444;
+}
+
+h1.title {
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 70px;
+	font-weight: 300;
+}
+
+body.home .game-action-btns button {
+	margin-right: 12px;
+	outline: 0 !important;
+}
+
+body.play .container{
+	width: 700px;
+}
+
+body.play #chessboard-app {
+	margin-top: 50px;
+}
+
+/*body.play { 
+	height: 100%;
+}
+
+body.play #chessboard-app {
+	height: 100%;
+}
+*/
+.header-wrapper h1 a {
+	color: #444;
+	font-size: 28px;
+	text-decoration: none;
+}
+
+.header-wrapper h1 {
+	margin: 0;
+}
+
+.header-wrapper {
+	height: 65px;
+	padding-top: 20px;
+}
+
+.header-wrapper .pull-right {
+	margin-top: 7px;
+}
+
+button.btn-primary {
+  background-color: #4a93f3;
+  color: white;
+  border: 0;
+  border-radius: 20px;
+  width: 125px;
+  font-weight: normal;
+}
+
+button.btn-default {
+  background-color: white;
+  color: #444;
+  border: 1px solid #444;
+  border-radius: 20px;
+  width: 125px;
+  font-weight: normal;
 }
 
 #board {
@@ -54,7 +142,6 @@ a {
 }
 
 .game-action-btns {
-	text-align: center;
 	margin-bottom: 50px;
 }
 
@@ -90,3 +177,23 @@ a {
 }
 .join-gameb-box a:hover {
 	color: #444;
+}
+
+/* Footer */
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	height: 80px;
+	width: 100%;
+}
+
+body {
+	margin-bottom: 80px;
+}
+
+
+html {
+	position: relative;
+	min-height: 100%;
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Chessboard</title>
+
+  <link rel="stylesheet" href="/libs/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/libs/chessboardjs/css/chessboard.css" />
+  <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600' rel='stylesheet' type='text/css'>  
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <script type="text/javascript" src="/libs/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/libs/chessboardjs/js/chessboard.js"></script>
+  <script type="text/javascript" src="/libs/chessboardjs/js/chess.js"></script>
+  <script type="text/javascript" src="/libs/socket.io-client/socket.io.js"></script>
+
+  <script type="text/javascript" src="/js/main.js"></script>
+  <script>
+  </script>
+</head>
+<body class="{% block bodyClasses %}{% endblock %}">
+  {% block body %}
+  {% endblock %}
+
+  {% block footer %}
+  <footer class="footer">
+    <hr/>
+    <div class="container">
+      <div class="pull-left">
+        Copyright 2015 - Chessboard.IO
+      </div>
+      <div class="pull-right">
+          <ul class="list-inline">
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+          </ul>
+      </div>
+    </div>
+  </footer>
+  {% endblock %}
+</body>
+</html>
