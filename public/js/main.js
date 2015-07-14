@@ -10,6 +10,7 @@ $(function() {
 
     App.fn.init = function() {
         var self = this;
+        var urlFields;
 
         console.log("Init");
 
@@ -21,27 +22,27 @@ $(function() {
         this.$app = $("#chessboard-app");
         this.$status = this.$app.find("#board-status");
 
+        urlFields = this.parseUrl(); 
+        this.gameID = urlFields.gameID;
+        this.playerColor = urlFields.playerColor || 'white';
+
         console.log('connecting...');
-        this.socket = io();
+        this.io = io.connect();
 
         this.Events().onNewGame();
 
         // TODO: move to load()
-        this.socket.on('newPosition', function (position) {
-          console.log('socket: new position', position);
+        this.io.on('newPosition', function (data) {
+          console.log('socket: new position', data.fen, data.gameID);
 
-          self.board.position(position);
-          self.game.load(position);
-          self.updateBoardStatus(position);
+          self.board.position(data.fen);
+          self.game.load(data.fen);
+          self.updateBoardStatus(data.fen);
         });
     };
 
     App.fn.load = function() {
-        var self = this,
-            urlFields = this.parseUrl();
-
-        this.gameID = urlFields.gameID;
-        this.playerColor = urlFields.playerColor || 'white';
+        var self = this;
 
         if (this.gameID) {
             this.getGameData(this.gameID, (function(data) {
@@ -61,7 +62,6 @@ $(function() {
                 this.board = new ChessBoard('board', this.gameConfig);
                 this.updateBoardStatus(data.position);
 
-                this.socket.emit('game data', {gameId: this.gameID});
                 // this.board.start();
 
                 window.board = this.board;
@@ -70,6 +70,12 @@ $(function() {
 
         this.renderJoinGameUrl();
         this.handleJoinGame();
+        this.isPlayerConnected();
+
+        this.io.emit('gameStart', {
+          gameID: this.gameID,
+          playerColor: this.playerColor
+        });
     };
 
     App.fn.newGame = function() {
@@ -158,6 +164,13 @@ $(function() {
             $statusText.text("Opponent's Turn");
           }          
         }
+      }
+    };
+
+    App.fn.isPlayerConnected = function() {
+      if (this.playerColor === "white") {
+        // if (this.socket.connected) {
+        // }
       }
     };
 
@@ -288,7 +301,11 @@ $(function() {
          self.game.load(fen);
          console.log('Updated.');
 
-         self.socket.emit('broadcastNewPosition', fen);
+         self.io.emit('broadcastNewPosition', {
+           gameID: self.gameID,
+           fen: fen
+         });
+
          self.updateBoardStatus(fen);
       })
       .error(function(error) {
@@ -296,7 +313,7 @@ $(function() {
       });
 
       // Update the other client
-      console.log('emit ', {"position": fen, gameId: this.gameID});
+      console.log('emit ', {"position": fen, gameID: this.gameID});
       // this.socket.emit('move', {gameId: this.gameID, fen:fen});
     };
 

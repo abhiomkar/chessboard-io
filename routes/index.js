@@ -1,21 +1,25 @@
-var express = require('express'),
-	app = express(),
-	swig = require('swig'),
-	Firebase = require('firebase');
-
-app.engine('html', swig.renderFile);
-app.set('view engine', 'html');
-// TODO: set cache to true in production
-app.set('view cache', false);
-swig.setDefaults({ cache: false });
+var express = require('express');
+var router = express.Router();
+var	Firebase = require('firebase');
 
 // ** UI Services **
 
-app.get('/', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.render('home');
 });
 
-app.get('/game/new', function(req, res, next) {
+router.get('/play/:id([a-zA-Z0-9\-_]+)/:color(white|black)/?', function(req, res, next) {
+    var gameID = req.params.id;
+    var firebase = new Firebase('https://chessboard-io.firebaseio.com/game/');
+
+	res.render('play', { title: 'hello', gameID: gameID });
+});	
+
+// ** 
+
+// ** Data Services **
+
+router.get('/game/new', function(req, res, next) {
 	console.log('/game/new');
 	var firebase = new Firebase('https://chessboard-io.firebaseio.com/game');
 	var postID = firebase.push({ position: "start" });
@@ -24,21 +28,11 @@ app.get('/game/new', function(req, res, next) {
 	res.send(JSON.stringify({gameID: postID.key()}));
 });
 
-app.get('/play/:id([a-zA-Z0-9\-_]+)/:color(white|black)/?', function(req, res, next) {
-  var gameID = req.params.id;
-
-  res.render('play', { title: 'hello', gameID: gameID });
-});	
-
-// ** 
-
-// ** Data Services **
-
-app.get('/game/:id([a-zA-Z0-9\-_]+)', function(req, res) {
+router.get('/game/:id([a-zA-Z0-9\-_]+)', function(req, res) {
 	console.log('/game/id');
 
-	var gameId = req.params.id, 
-		firebase = new Firebase('https://chessboard-io.firebaseio.com/game/' + gameId);
+	var gameId = req.params.id;
+	var firebase = new Firebase('https://chessboard-io.firebaseio.com/game/' + gameId);
 
 	firebase.once("value", function(snapshot) {
 		var gameData = snapshot.val();
@@ -65,7 +59,7 @@ app.get('/game/:id([a-zA-Z0-9\-_]+)', function(req, res) {
 	});
 });
 
-app.put('/game/:id/?', function(req, res) {
+router.put('/game/:id/?', function(req, res) {
 	var gameId = req.params.id,
 		firebase = new Firebase('https://chessboard-io.firebaseio.com/game/' + gameId);
 
@@ -81,14 +75,9 @@ app.put('/game/:id/?', function(req, res) {
 			console.log('Put success.');
 			res.set('Content-type', 'application/json');
 			res.send(JSON.stringify({}));
-
-			// io.broadcast.emit("newPosition");
-			// www.newPosition();
 		}
 	});
 
 });
 
-// **
-
-module.exports = app
+module.exports = router;

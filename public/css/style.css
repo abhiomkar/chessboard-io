@@ -117,8 +117,13 @@ button.btn-default {
 	display: inline-block;
 }
 
-#board-status .game-status-color.green {
+#board-status .game-status-color.online {
 	background-color: #43bb78;
+}
+
+#board-status .game-status-color.offline {
+	background-color: transparent;
+	border 1px solid #ccc;
 }
 
 #board-status img.piece {
