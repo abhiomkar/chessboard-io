@@ -68,8 +68,9 @@ $(function() {
             }).bind(this));
         }
 
-        this.renderJoinGameUrl();
+        this.renderShareGameUrl();
         this.handleJoinGame();
+        this.handleShareGame();
         this.isPlayerConnected();
 
         this.io.emit('gameStart', {
@@ -100,12 +101,12 @@ $(function() {
         });
     };
 
-    App.fn.renderJoinGameUrl = function() {
+    App.fn.renderShareGameUrl = function() {
       var href = window.location.href,
           shareUrl,
-          $box = this.$app.find('.join-game-box'),
-          $input = this.$app.find('.join-game-box input'),
-          $closeBtn = this.$app.find('.join-game-box a');
+          $box = this.$app.find('.share-game-box'),
+          $input = this.$app.find('.share-game-box input'),
+          $closeBtn = this.$app.find('.share-game-box a');
 
       if (href.indexOf('/black') > 0) {
         shareUrl = href.replace('/black', '/white');
@@ -118,8 +119,9 @@ $(function() {
         $(this).select();
       });
 
-      $closeBtn.on('click', function() {
-        $box.fadeOut('300');
+      $closeBtn.on('click', function(e) {
+        e.preventDefault();
+        $box.addClass('hide');
       });
 
       $input.val(shareUrl);
@@ -128,11 +130,20 @@ $(function() {
     App.fn.handleJoinGame = function() {
       var self = this;
 
-      this.$app.find('.game-action-btns .join-game').on('click', function() {
-        self.$app.find('.join-game-box')
-          .show(0)
-          .delay(10000)
-          .fadeOut('300');
+      $('.game-action-btns .join-game').on('click', function() {
+        $(".game-demo-image")
+          .removeClass('hide')
+          .addClass("fadeInUp");
+      });
+    };
+
+    App.fn.handleShareGame = function() {
+      var self = this;
+
+      $('.game-action-btns .share-game').on('click', function() {
+        $(".share-game-box")
+          .removeClass('hide')
+          .addClass("fadeIn");
       });
     };
 

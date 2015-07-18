@@ -10,8 +10,11 @@ html, body.home {
 	height: 100%;
 }
 
+body button {
+	outline: none !important;
+}
+
 body.home .app-landing {
-	height: 100% !important;
 	position: relative;
 	top: 25%;
 }
@@ -22,6 +25,7 @@ body.home .container {
 
 body.home #chessboard-app {
 	height: 100%;
+	position: relative;
 }
 
 body.home hr.body-line {
@@ -29,6 +33,16 @@ body.home hr.body-line {
 	top: 30px;
 	color: #444;
 	background-color: #444;
+}
+
+body.home .game-demo-image img {
+	height: 250px;
+}
+
+body.home .game-demo-image {
+  position: absolute;
+  bottom: 100px;
+  left: -175px;
 }
 
 h1.title {
@@ -46,8 +60,13 @@ body.play .container{
 	width: 700px;
 }
 
+body.play hr {
+	width: 100%;
+}
+
 body.play #chessboard-app {
 	margin-top: 50px;
+    position: relative;
 }
 
 /*body.play { 
@@ -147,21 +166,20 @@ button.btn-default {
 }
 
 .game-action-btns {
-	margin-bottom: 50px;
 }
 
-.join-game-box {
-  position: fixed;
-  top: 20px;
-  left: 32%;
+.share-game-box {
+  position: absolute;
+  top: -41px;  
   background-color: rgb(253, 214, 151);
   padding-left: 16px;
   border-radius: 5px;
   padding-bottom: 3px;
   font-size: 12px;
+  display: inline-block;
 }
 
-.join-game-box input {
+.share-game-box input {
 	width: 333px;
 	font-size: 12px;
 	padding: 3px 0;
@@ -172,15 +190,14 @@ button.btn-default {
 	background-color: transparent;
 }
 
-.join-game-box a {
+.share-game-box a {
 	  padding-right: 18px;
 	  color: #444;
 	  font-size: 14px;
 	  text-decoration: none;
 	  display: inline-block;
-	  text-decoration: underline;
 }
-.join-gameb-box a:hover {
+.share-gameb-box a:hover {
 	color: #444;
 }
 
@@ -191,12 +208,12 @@ button.btn-default {
 	bottom: 0;
 	height: 80px;
 	width: 100%;
+	background-color: white;
 }
 
-body {
-	margin-bottom: 80px;
+.footer hr {
+	margin-top: 0;
 }
-
 
 html {
 	position: relative;
