@@ -22,7 +22,7 @@ $(function() {
         this.$app = $("#chessboard-app");
         this.$status = this.$app.find("#board-status");
 
-        urlFields = this.parseUrl(); 
+        urlFields = this.parseUrl();
         this.gameID = urlFields.gameID;
         this.playerColor = urlFields.playerColor || 'white';
 
@@ -46,21 +46,28 @@ $(function() {
 
         if (this.gameID) {
             this.getGameData(this.gameID, (function(data) {
-               console.log(this.gameID + " position is " + data.position);
+              var gameHistory = data;
+              var keys = Object.keys(gameHistory);
+              keys.sort();
+              var lastKey = keys.slice(-1)[0];
+              var position = gameHistory[lastKey].position;
+
+              console.log('loading data...', data);
+               console.log(this.gameID + " position is " + position);
                 this.gameConfig = {
-                    pieceTheme: '/libs/chessboardjs/img/chesspieces/wikipedia/{piece}.png',
+                    pieceTheme: '/libs/chessboardjs/www/img/chesspieces/wikipedia/{piece}.png',
                     draggable: true,
                     orientation: this.playerColor,
                     onDragStart: this.Events().onDragStart,
                     onDrop: this.Events().onDrop,
                     onSnapEnd: this.Events().onSnapEnd,
-                    position: data.position
+                    position: position
                 };
 
                 this.game = new Chess();
-                this.game.load(data.position);
+                this.game.load(position);
                 this.board = new ChessBoard('board', this.gameConfig);
-                this.updateBoardStatus(data.position);
+                this.updateBoardStatus(position);
 
                 // this.board.start();
 
@@ -173,7 +180,7 @@ $(function() {
           }
           else {
             $statusText.text("Opponent's Turn");
-          }          
+          }
         }
       }
     };
@@ -221,6 +228,8 @@ $(function() {
 
             onDrop: function(source, target) {
               // see if the move is legal
+              console.log(source + ' --> ' + target);
+
               var move = self.game.move({
                 from: source,
                 to: target,
@@ -230,7 +239,10 @@ $(function() {
               // illegal move
               if (move === null) return 'snapback';
 
-              self.updateStatus();
+              self.updateStatus({
+                source: source,
+                target: target
+              });
               self.render();
             },
 
@@ -260,7 +272,7 @@ $(function() {
               })
             }
 
-            // update the board position after the piece snap 
+            // update the board position after the piece snap
             // for castling, en passant, pawn promotion
 
             // onSnapEnd: function() {
@@ -269,10 +281,16 @@ $(function() {
         }
     };
 
-    App.fn.updateStatus = function() {
+    App.fn.updateStatus = function(options) {
       var status = '',
           self = this,
-          fen = this.game.fen(); //.split(' ')[0];
+          fen = this.game.fen(),
+          data = {
+            from: options.source,
+            to: options.target,
+            timestamp: (new Date()).getTime(),
+            position: fen
+          };
 
       var moveColor = 'White';
       if (this.game.turn() === 'b') {
@@ -306,7 +324,7 @@ $(function() {
         url: "/game/" + this.gameID,
         type: "PUT",
         dataType: "json",
-        data: { position: fen }
+        data: data
       })
       .done(function(response) {
          self.game.load(fen);
