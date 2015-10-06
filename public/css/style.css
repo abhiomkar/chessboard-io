@@ -57,7 +57,7 @@ body.home .game-action-btns button {
 }
 
 body.play .container{
-	width: 700px;
+	width: 850px;
 }
 
 body.play hr {
@@ -69,7 +69,7 @@ body.play #chessboard-app {
     position: relative;
 }
 
-/*body.play { 
+/*body.play {
 	height: 100%;
 }
 
@@ -170,7 +170,7 @@ button.btn-default {
 
 .share-game-box {
   position: absolute;
-  top: -41px;  
+  top: -41px;
   background-color: rgb(253, 214, 151);
   padding-left: 16px;
   border-radius: 5px;
@@ -219,3 +219,41 @@ html {
 	position: relative;
 	min-height: 100%;
 }
+
+.game-log {
+  min-height: 396px;
+	border-left: 1px solid #f1f1f1;
+  padding-left: 50px;
+  overflow-y: scroll;
+}
+
+	.game-log ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	.game-log h3 {
+		margin-top: 0;
+		margin-bottom: 20px;
+		text-align: center;
+		width: 200px;
+	}
+
+	.game-log ul li {
+		padding: 6px 0;
+		display: block;
+    width: 330px;
+	}
+
+	.game-log ul li .left {
+		width: 115px;
+		display: inline-block;
+		text-align: right;
+		padding-right: 30px;
+	}
+
+	.game-log ul li .right {
+		width: 60px;
+		display: inline-block;
+	}

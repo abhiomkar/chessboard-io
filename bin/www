@@ -22,10 +22,7 @@ io.on('connection', function(socket) {
   });
 
   socket.on('broadcastNewPosition', function(data) {
-      socket.broadcast.to(data.gameID).emit('newPosition', {
-          fen: data.fen,
-          gameID: data.gameID
-      });
+      socket.broadcast.to(data.gameID).emit('newPosition', data);
   });
 });
 

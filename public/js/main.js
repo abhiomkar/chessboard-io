@@ -38,6 +38,8 @@ $(function() {
           self.board.position(data.fen);
           self.game.load(data.fen);
           self.updateBoardStatus(data.fen);
+          console.log(data);
+          self.renderToGameLog(data);
         });
     };
 
@@ -68,6 +70,7 @@ $(function() {
                 this.game.load(position);
                 this.board = new ChessBoard('board', this.gameConfig);
                 this.updateBoardStatus(position);
+                this.renderGameLog(gameHistory);
 
                 // this.board.start();
 
@@ -106,6 +109,44 @@ $(function() {
         .error(function() {
             console.log("Error loading game data.");
         });
+    };
+
+    App.fn.renderToGameLog = function(log) {
+      var from = log.source;
+      var to = log.target;
+      var who = (log.piece[0] === this.playerColor[0]) ? 'You' : 'Opponent';
+      var $li = $("<li class='log'><span class='left'>" + who + "</span> <span class='right'>" + from + " → " + to + "</span></li>");
+
+      $('.game-log ul').prepend($li);
+    };
+
+    App.fn.renderGameLog = function(gameHistory) {
+      var that = this;
+      var $logArray = [];
+
+      var keys = Object.keys(gameHistory);
+      keys.sort();
+      keys.reverse();
+
+      console.log('keys: ', keys);
+
+      keys.forEach(function(key) {
+        var h = gameHistory[key];
+
+        var from = h.from;
+        var to = h.from;
+
+        if (h.position === 'start') {
+          $logArray.push("<li class='log'><span class='left'>Game started</span></li>");
+        }
+        else {
+          console.log(h);
+          var who = (h.piece[0] === that.playerColor[0]) ? 'You' : 'Opponent';
+          $logArray.push("<li class='log'><span class='left'>" + who + "</span> <span class='right'>" + from + " → " + to + "</span></li>");
+        }
+      });
+
+      $('.game-log ul').append($logArray.join(''));
     };
 
     App.fn.renderShareGameUrl = function() {
@@ -226,7 +267,7 @@ $(function() {
               }
             },
 
-            onDrop: function(source, target) {
+            onDrop: function(source, target, piece) {
               // see if the move is legal
               console.log(source + ' --> ' + target);
 
@@ -241,9 +282,14 @@ $(function() {
 
               self.updateStatus({
                 source: source,
-                target: target
+                target: target,
+                piece: piece
               });
-              self.render();
+              self.renderToGameLog({
+                source: source,
+                target: target,
+                piece: piece
+              });
             },
 
             onNewGame: function() {
@@ -289,7 +335,8 @@ $(function() {
             from: options.source,
             to: options.target,
             timestamp: (new Date()).getTime(),
-            position: fen
+            position: fen,
+            piece: options.piece
           };
 
       var moveColor = 'White';
@@ -332,7 +379,10 @@ $(function() {
 
          self.io.emit('broadcastNewPosition', {
            gameID: self.gameID,
-           fen: fen
+           fen: fen,
+           piece: options.piece,
+           source: options.source,
+           target: options.target
          });
 
          self.updateBoardStatus(fen);
@@ -344,10 +394,6 @@ $(function() {
       // Update the other client
       console.log('emit ', {"position": fen, gameID: this.gameID});
       // this.socket.emit('move', {gameId: this.gameID, fen:fen});
-    };
-
-    App.fn.render = function() {
-      this.$status.find('.game-turn');
     };
 
     // position: 'rnb1kbnr/pppp1ppp/8/4p3/6Pq/5P2/PPPPP2P/RNBQKBNR',
