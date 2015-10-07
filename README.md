@@ -2,7 +2,7 @@
 Chessboard Multiplayer
 
 ## Debug
-	
+
 	npm-debug ./bin/www
 
 ## Update to github
@@ -13,7 +13,8 @@ Chessboard Multiplayer
 
 	cd ~/www/chessboard-io
 	git pull
-	npm install
+	npm install && npm update
+    bower install && bower update
 
 	pm2 restart www
 
