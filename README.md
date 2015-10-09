@@ -29,3 +29,11 @@ Chessboard Multiplayer
         proxy_cache_bypass $http_upgrade;
     }
 
+## TODO
+
+- Add timer for game
+- Add resign button
+- highlight the move when user hovers on the game log entry
+- show indication when opponent piece is killed in game log
+- show the piece icon in game log
+- add timestamp in game log

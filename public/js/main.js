@@ -57,7 +57,7 @@ $(function() {
               console.log('loading data...', data);
                console.log(this.gameID + " position is " + position);
                 this.gameConfig = {
-                    pieceTheme: '/libs/chessboardjs/www/img/chesspieces/wikipedia/{piece}.png',
+                    pieceTheme: '/libs/chessboardjs/www/img/chesspieces/wikipedia-classic/{piece}.png',
                     draggable: true,
                     orientation: this.playerColor,
                     onDragStart: this.Events().onDragStart,
