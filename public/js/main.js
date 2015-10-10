@@ -159,6 +159,8 @@ $(function() {
           else {
             this.$gameTurn.text('Opponent won! (Checkmate)');
           }
+          this.$piece.filter('.white-piece').addClass('hide');
+          this.$piece.filter('.black-piece').addClass('hide');
 
           status.in_checkmate = true;
         }
@@ -181,6 +183,8 @@ $(function() {
           this.$gameTurn.text('Draw.');
           status.in_draw = true;
         }
+        this.$piece.filter('.white-piece').addClass('hide');
+        this.$piece.filter('.black-piece').addClass('hide');
       }
       else {
         if (who === 'You') {
