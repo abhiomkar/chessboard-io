@@ -31,6 +31,7 @@ Chessboard Multiplayer
 
 ## TODO
 
+- support game statuses - in check, game over, stalemate etc
 - Add timer for game
 - Add resign button
 - highlight the move when user hovers on the game log entry

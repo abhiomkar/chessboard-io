@@ -2,11 +2,18 @@ $(function() {
 
     var App = function($el) {
         this.gameID;
+        this.cacheDOM();
         this.init();
         this.load();
     };
 
     App.fn = App.prototype;
+
+    App.fn.cacheDOM = function() {
+      this.$gameStatus = $(".game-status");
+      this.$gameTurn = $(".game-turn");
+      this.$piece = $("#board-status .piece");
+    };
 
     App.fn.init = function() {
         var self = this;
@@ -37,9 +44,8 @@ $(function() {
 
           self.board.position(data.fen);
           self.game.load(data.fen);
-          self.updateBoardStatus(data.fen);
-          console.log(data);
           self.renderToGameLog(data);
+          self.renderGameStatus();
         });
     };
 
@@ -69,10 +75,8 @@ $(function() {
                 this.game = new Chess();
                 this.game.load(position);
                 this.board = new ChessBoard('board', this.gameConfig);
-                this.updateBoardStatus(position);
                 this.renderGameLog(gameHistory);
-
-                // this.board.start();
+                this.renderGameStatus();
 
                 window.board = this.board;
             }).bind(this));
@@ -118,6 +122,76 @@ $(function() {
       var $li = $("<li class='log'><span class='left'>" + who + "</span> <span class='right'>" + from + " → " + to + "</span></li>");
 
       $('.game-log ul').prepend($li);
+    };
+
+    App.fn.renderGameStatus = function() {
+      var who = 'You';
+      var status = {};
+
+      // who's turn?
+      if (this.game.turn() === 'b') {
+        if (this.playerColor === 'white') {
+          who = 'Opponent';
+        }
+      }
+      else if (this.game.turn() === 'w') {
+        if (this.playerColor === 'black') {
+          who = 'Opponent';
+        }
+      }
+
+      // change piece color in game status
+      if (this.game.turn() === 'w') {
+        this.$piece.filter('.white-piece').removeClass('hide');
+        this.$piece.filter('.black-piece').addClass('hide');
+      }
+      else if (this.game.turn() === 'b') {
+        this.$piece.filter('.white-piece').addClass('hide');
+        this.$piece.filter('.black-piece').removeClass('hide');
+      }
+
+      // in-check / in-checkmate / in-stalemate / in-draw ?
+      if (this.game.in_check()) {
+        if (this.game.in_checkmate()) {
+          if (who === 'Opponent') {
+            this.$gameTurn.text('You won! (Checkmate)');
+          }
+          else {
+            this.$gameTurn.text('Opponent won! (Checkmate)');
+          }
+
+          status.in_checkmate = true;
+        }
+        else {
+          if (who === 'Opponent') {
+            this.$gameTurn.text("Opponent is in Check. Opponent's turn.");
+          }
+          else {
+            this.$gameTurn.text("You are in Check. Your turn.");
+          }
+        }
+      }
+      else if (this.game.in_draw()) {
+        if (this.game.in_stalemate()) {
+          this.$gameTurn.text('Stalemate. Draw.');
+          status.in_stalemate = true;
+          status.in_draw = true;
+        }
+        else {
+          this.$gameTurn.text('Draw.');
+          status.in_draw = true;
+        }
+      }
+      else {
+        if (who === 'You') {
+          this.$gameTurn.text('Your Turn');
+        }
+        else {
+          this.$gameTurn.text("Opponent's Turn");
+        }
+      }
+
+      return status;
     };
 
     App.fn.renderGameLog = function(gameHistory) {
@@ -195,37 +269,6 @@ $(function() {
       });
     };
 
-    App.fn.updateBoardStatus = function(position) {
-      var pos = position.split(" "),
-          $piece = this.$app.find("#board-status .piece"),
-          $statusText = this.$app.find('.game-turn');
-
-      if (pos.length > 1) {
-        if (pos[1] === 'w') {
-          $piece.filter('.white-piece').removeClass('hide');
-          $piece.filter('.black-piece').addClass('hide');
-
-          if (this.playerColor === 'white') {
-            $statusText.text('Your Turn');
-          }
-          else {
-            $statusText.text("Opponent's Turn");
-          }
-        }
-        else if (pos[1] === 'b') {
-          $piece.filter('.white-piece').addClass('hide');
-          $piece.filter('.black-piece').removeClass('hide');
-
-          if (this.playerColor === 'black') {
-            $statusText.text('Your Turn');
-          }
-          else {
-            $statusText.text("Opponent's Turn");
-          }
-        }
-      }
-    };
-
     App.fn.isPlayerConnected = function() {
       if (this.playerColor === "white") {
         // if (this.socket.connected) {
@@ -280,11 +323,16 @@ $(function() {
               // illegal move
               if (move === null) return 'snapback';
 
-              self.updateStatus({
+              var criticalStatus = self.renderGameStatus();
+              var gameStatus = {
                 source: source,
                 target: target,
                 piece: piece
-              });
+              };
+
+              gameStatus = $.extend({}, gameStatus, criticalStatus);
+
+              self.updateStatus(gameStatus);
               self.renderToGameLog({
                 source: source,
                 target: target,
@@ -384,8 +432,6 @@ $(function() {
            source: options.source,
            target: options.target
          });
-
-         self.updateBoardStatus(fen);
       })
       .error(function(error) {
          console.log('Error: ', error);
