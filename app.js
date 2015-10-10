@@ -10,7 +10,6 @@ var Firebase = require('firebase');
 var io = require("socket.io");
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
 
 var app = express();
 var server = http.Server(app);
@@ -29,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(function(req, res, next) {
-//   req.io = io; 
+//   req.io = io;
 //   next();
 // });
 // TODO: set cache to true in production
@@ -40,7 +39,6 @@ swig.setDefaults({ cache: false });
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 // app.http().io();
 app.use('/', routes);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

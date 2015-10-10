@@ -31,6 +31,7 @@ Chessboard Multiplayer
 
 ## TODO
 
+- add about page and contact pages
 - support game statuses - in check, game over, stalemate etc
 - Add timer for game
 - Add resign button

@@ -8,6 +8,10 @@ router.get('/', function(req, res, next) {
   res.render('home');
 });
 
+router.get('/about', function(req, res, next) {
+  res.render('about');
+});
+
 router.get('/play/:id([a-zA-Z0-9\-_]+)/:color(white|black)/?', function(req, res, next) {
     var gameID = req.params.id;
     var firebase = new Firebase('https://chessboard-io.firebaseio.com/game/');

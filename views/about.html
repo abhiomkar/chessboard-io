@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% block bodyClasses -%}
+about
+{%- endblock %}
+
+{% block body %}
+<div class="header-wrapper container">
+  <div class="title pull-left">
+    <h1><a href="/">Chessboard</a></h1>
+  </div>
+  <div class="pull-right">
+    <ul class="list-inline game-action-btns">
+      <li><button class="btn btn-primary new-game">New Game</button></li>
+    </ul>
+  </div>
+</div>
+<hr/>
+
+<div class="container">
+  <h2>About</h2>
+
+  <p>
+    Chessboard.io is simple & fastest multiplayer chess game. You can resume your chess game any time / any day later, Chessboard.io remembers your board positions for lifetime along with history of all the piece moves.
+  </p>
+
+  <p>
+    Chessboard.io is in very early stage, if you find any issues please report it <a href="https://github.com/abhiomkar/chessboard-io/issues">here</a>. Also if you've any suggestions please report at the same place.
+  </p>
+
+  <p>
+    Chessboard.io is made by <strong>Abhinay Omkar</strong> (<a href="http://twitter.com/abhiomkar">@abhiomkar</a>). And it is Open Source at <a href="https://github.com/abhiomkar/chessboard-io">Github</a>.
+  </p>
+
+  <br>
+
+  <h4>Credits</h4>
+
+  <ul>
+    <li><a href="https://github.com/jhlywa/chess.js">Chess.js</a> - JavaScript chess library</li>
+    <li><a href="http://chessboardjs.com/">Chessboard.js</a> - JavaScript chess board</li>
+  </ul>
+
+  <br>
+
+  <h4>Learn</h4>
+
+  <ul>
+    <li>Chesscademy - <a href="https://www.chesscademy.com/">https://www.chesscademy.com</a>
+  </ul>
+</div>
+{% endblock %}
