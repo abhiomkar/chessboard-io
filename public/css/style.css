@@ -49,6 +49,27 @@ h1.title {
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 70px;
 	font-weight: 300;
+	line-height: 999px;
+	overflow: hidden;
+	height: 60px;
+	background: url('/images/chessboard.io-logo-large.png') center center no-repeat transparent;
+	background-size: 214px;
+	width: 224px;
+	margin-bottom: 27px;
+}
+
+h1.logo {
+	line-height: 999px;
+	overflow: hidden;
+	background: url('/images/chessboard.io-logo-large.png') center center no-repeat transparent;
+	height: 50px;
+	width: 200px;
+	background-size: 180px;
+}
+
+.logo-container {
+	position: relative;
+	top: -5px;
 }
 
 body.home .game-action-btns button {
