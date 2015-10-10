@@ -320,6 +320,9 @@ $(function() {
                 promotion: 'q' // NOTE: always promote to a queen for example simplicity
               });
 
+              // To fix the castling move - reload the fen (workaround) - but not updating the position immediatley?
+              self.game.load(self.game.fen());
+
               // illegal move
               if (move === null) return 'snapback';
 
@@ -376,8 +379,7 @@ $(function() {
     };
 
     App.fn.updateStatus = function(options) {
-      var status = '',
-          self = this,
+      var self = this,
           fen = this.game.fen(),
           data = {
             from: options.source,
@@ -386,31 +388,6 @@ $(function() {
             position: fen,
             piece: options.piece
           };
-
-      var moveColor = 'White';
-      if (this.game.turn() === 'b') {
-        moveColor = 'Black';
-      }
-
-      // checkmate?
-      if (this.game.in_checkmate() === true) {
-        status = 'Game over, ' + moveColor + ' is in checkmate.';
-      }
-
-      // draw?
-      else if (this.game.in_draw() === true) {
-        status = 'Game over, drawn position';
-      }
-
-      // game still on
-      else {
-        status = moveColor + ' to move';
-
-        // check?
-        if (this.game.in_check() === true) {
-          status += ', ' + moveColor + ' is in check';
-        }
-      }
 
       console.log("gameId: ", this.gameID);
       console.log("fen: ", fen);
@@ -422,7 +399,7 @@ $(function() {
         data: data
       })
       .done(function(response) {
-         self.game.load(fen);
+         // self.game.load(fen);
          console.log('Updated.');
 
          self.io.emit('broadcastNewPosition', {

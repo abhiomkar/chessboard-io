@@ -38,3 +38,4 @@ Chessboard Multiplayer
 - show indication when opponent piece is killed in game log
 - show the piece icon in game log
 - add timestamp in game log
+- add restart game feature
