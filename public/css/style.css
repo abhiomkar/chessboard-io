@@ -191,6 +191,7 @@ button.btn-default {
 
 .share-game-box {
   position: absolute;
+  margin-left: 85px;
   top: -41px;
   background-color: rgb(253, 214, 151);
   padding-left: 16px;

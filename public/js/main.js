@@ -46,6 +46,8 @@ $(function() {
           self.game.load(data.fen);
           self.renderToGameLog(data);
           self.renderGameStatus();
+
+          self.hideShareGameUrl();
         });
     };
 
@@ -77,6 +79,10 @@ $(function() {
                 this.board = new ChessBoard('board', this.gameConfig);
                 this.renderGameLog(gameHistory);
                 this.renderGameStatus();
+
+                if (position === 'start' && this.playerColor === 'white') {
+                  this.showShareGameUrl();
+                }
 
                 window.board = this.board;
             }).bind(this));
@@ -271,6 +277,18 @@ $(function() {
           .removeClass('hide')
           .addClass("fadeIn");
       });
+    };
+
+    App.fn.showShareGameUrl = function() {
+      $(".share-game-box")
+        .removeClass('hide')
+        .addClass("fadeIn");
+    };
+
+    App.fn.hideShareGameUrl = function() {
+      $(".share-game-box")
+        .removeClass('hide')
+        .addClass("fadeOut");
     };
 
     App.fn.isPlayerConnected = function() {
