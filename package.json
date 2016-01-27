@@ -19,7 +19,8 @@
     "serve-favicon": "~2.2.0",
     "socket.io": "^1.3.2",
     "swig": "^1.4.2",
-    "bower": "~1.7.6"
+    "bower": "~1.7.6",
+    "newrelic": "~1.25.1"
   },
   "devDependencies": {
     "node-inspector": "^0.11.1"
