@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "postinstall": "bower cache clean && bower install"
   },
   "dependencies": {
     "body-parser": "~1.10.2",
@@ -17,7 +18,8 @@
     "morgan": "~1.5.1",
     "serve-favicon": "~2.2.0",
     "socket.io": "^1.3.2",
-    "swig": "^1.4.2"
+    "swig": "^1.4.2",
+    "bower": "~1.7.6"
   },
   "devDependencies": {
     "node-inspector": "^0.11.1"
