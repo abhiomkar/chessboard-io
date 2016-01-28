@@ -18,6 +18,7 @@ $(function() {
     App.fn.init = function() {
         var self = this;
         var urlFields;
+        var isHttps = (location.protocol === 'https:');
 
         console.log("Init");
 
@@ -34,7 +35,7 @@ $(function() {
         this.playerColor = urlFields.playerColor || 'white';
 
         console.log('connecting...');
-        this.io = io.connect();
+        this.io = io.connect(location.href, {secure: isHttps});
 
         this.Events().onNewGame();
 

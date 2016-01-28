@@ -33,6 +33,7 @@ io.on('connection', function(socket) {
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+app.set('trust_proxy', 1);
 
 /**
  * Create HTTP server.
